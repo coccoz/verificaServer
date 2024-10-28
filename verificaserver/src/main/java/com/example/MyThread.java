@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class MyThread extends Thread 
 {
@@ -25,31 +26,55 @@ public class MyThread extends Thread
             DataOutputStream out = new DataOutputStream(s.getOutputStream());
 
             String stringaRicevuta;
-            String risposta = "null";
+            String risposta = "";
+            ArrayList <String> note = new ArrayList();
 
             do 
             {
 
                 stringaRicevuta = in.readLine(); //stringa ricevuta dal client
 
-                if (stringaRicevuta.equals("!")) 
-                {
-
-                }
-
-                if (stringaRicevuta.equals("?")) 
-                {
-
-                }
-
-                if (stringaRicevuta.equals("@")) 
-                {
-
-                }
-
                 System.out.println("La sringa ricevuta: " + stringaRicevuta);
 
-                out.writeBytes(risposta + "\n"); //stringa da rimandare indietro al client
+
+                if (stringaRicevuta.equals("!")) 
+                {
+                    risposta = "!";
+                    out.writeBytes(risposta + "\n");
+                    break;
+                }
+
+                else if (stringaRicevuta.equals("?")) 
+                {
+                    for (String object : note) 
+                    {
+                        risposta = object;
+                        System.out.println("Risposta: " + risposta);
+                        out.writeBytes(risposta + "\n");
+                    }
+                    out.writeBytes("@" + "\n");
+
+                    // for (int i = 0; i < note.size(); i++) 
+                    // {
+                    //     risposta = note.get(i);
+                    //     out.writeBytes(risposta + "\n");  
+
+                    // }
+
+                    // risposta = "@";                   
+                    
+                }
+
+                else if (stringaRicevuta.equals(null))
+                {
+
+                }
+
+                else {
+                    note.add(stringaRicevuta);
+                    out.writeBytes("OK" + "\n");
+
+                }
 
             } while (!stringaRicevuta.equals("!"));
 
